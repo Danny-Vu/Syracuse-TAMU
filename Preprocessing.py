@@ -87,3 +87,36 @@ filtered_df['File'] = pd.concat([baseline_df['File'], treated_df['File']])
 filtered_df.reset_index(drop=True, inplace=True)
 
 filtered_df
+
+#train-test split for our model training 
+baseline_df = filtered_df[filtered_df['Group'] == 'baseline']
+treated_df = filtered_df[filtered_df['Group'] == 'treated']
+print(len(baseline_df))
+print(len(treated_df))
+
+X_baseline=baseline_df.iloc[:, 207:607].to_numpy() # jsut the signal
+X_baseline = X_baseline.reshape(X_baseline.shape[0], -1)
+y_baseline =baseline_df['Group'].to_numpy() # for our labels
+
+X_treated =treated_df.iloc[:, 207:607].to_numpy() # jsut the signal
+X_treated = X_treated.reshape(X_treated.shape[0], -1)
+y_treated =treated_df['Group'].to_numpy() # for our labels
+
+from sklearn import preprocessing
+min_max_scaler = preprocessing.MinMaxScaler()
+X_baseline = min_max_scaler.fit_transform(X_baseline)
+X_treated = min_max_scaler.fit_transform(X_treated)
+
+original_indices = np.arange(len(X_baseline))
+
+train_data, test_data, train_labels, test_labels, train_indices, test_indices = train_test_split(
+    X_baseline, y_baseline, original_indices, test_size=0.3, random_state=123
+)
+
+min_val = tf.reduce_min(train_data)
+max_val = tf.reduce_max(train_data)
+
+train_data = (train_data - min_val) / (max_val - min_val)
+test_data = (test_data - min_val) / (max_val - min_val)
+
+train_data = tf.cast(train_data, tf.float32)
