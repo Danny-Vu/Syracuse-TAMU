@@ -49,6 +49,9 @@ control_dose = [
 ]
 
 # Combining plates per donor | assuming you have both baseline and treated plates and it is organized 
+
+all_plate_signals = pd.DataFrame() #this is to keep everything
+
 donor = 1083
 
 for i,value in enumerate(all_plates_1083, start = 1):
