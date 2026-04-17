@@ -30,11 +30,6 @@ for p in [1, 5, 10, 20]:
     val = np.percentile(baseline_deltas, p)
     print(f"{p}th percentile delta: {val:.4f}")
 
-import pandas as pd
-from sklearn.preprocessing import MinMaxScaler
-
-df = pd.read_csv('/content/drive/MyDrive/Colab Notebooks/all_plate_signals_plate16.csv')
-
 # Extract signal (columns 307 to 506 inclusive)
 X = df.iloc[:, 207:607].to_numpy()
 X = X.reshape(X.shape[0], -1)
