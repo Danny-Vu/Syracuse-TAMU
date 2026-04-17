@@ -1,5 +1,6 @@
 """
 extracting the raw .seq1 files to excel files for processing
+RStudio
 """
 
 library(writexl) #to import a library use command install.packages('___')
